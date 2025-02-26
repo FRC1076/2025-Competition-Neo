@@ -77,7 +77,7 @@ public final class Constants {
 
         public static class PhotonVision {
             public static final PoseStrategy kLocalizationStrategy = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
-            public static final PoseStrategy kFallbackStrategy = PoseStrategy.LOWEST_AMBIGUITY;
+            public static final PoseStrategy kFallbackStrategy = PoseStrategy.PNP_DISTANCE_TRIG_SOLVE;
             public static final Matrix<N3, N1> kSingleTagDefaultStdDevs = VecBuilder.fill(4, 4, 8);
             public static final Matrix<N3, N1> kMultiTagDefaultStdDevs = VecBuilder.fill(0.5, 0.5, 1);
         }

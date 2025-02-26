@@ -38,6 +38,11 @@ public class GyroIOHardware implements GyroIO {
     }
 
     @Override
+    public Rotation2d getHeading() {
+        return new Rotation2d(yaw.getValue());
+    }
+
+    @Override
     public void updateInputs(GyroIOInputs inputs){
         inputs.connected = BaseStatusSignal.refreshAll(yaw,yawVelocity).equals(StatusCode.OK);
         inputs.yawPosition = new Rotation2d(yaw.getValue());

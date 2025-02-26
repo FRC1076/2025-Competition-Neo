@@ -38,6 +38,7 @@ import org.pihisamurai.frc2025.robot.commands.drive.TeleopDriveCommand;
 import org.pihisamurai.frc2025.robot.subsystems.ExampleSubsystem;
 import org.pihisamurai.frc2025.robot.subsystems.Vision;
 import org.pihisamurai.frc2025.robot.subsystems.drive.DriveSubsystem;
+import org.pihisamurai.frc2025.robot.subsystems.drive.GyroIO;
 import org.pihisamurai.frc2025.robot.subsystems.drive.GyroIOHardware;
 import org.pihisamurai.frc2025.robot.subsystems.drive.GyroIOSim;
 import org.pihisamurai.frc2025.robot.subsystems.drive.ModuleIOHardware;
@@ -68,7 +69,9 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-    private final Vision m_vision = new Vision();
+    private final GyroIO gyro = new GyroIOHardware();
+
+    private final Vision m_vision = new Vision(gyro::getHeading);
 
     private final DriveSubsystem m_drive;
 
@@ -89,7 +92,7 @@ public class RobotContainer {
 
         if (Akit.currentMode == 0) {
             m_drive = new DriveSubsystem(
-                new GyroIOHardware(), 
+                gyro, 
                 new ModuleIOHardware(ModuleConfig.FrontLeft), 
                 new ModuleIOHardware(ModuleConfig.FrontRight), 
                 new ModuleIOHardware(ModuleConfig.RearRight),

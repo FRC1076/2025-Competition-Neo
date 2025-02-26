@@ -19,8 +19,10 @@ public interface GyroIO {
 
     public abstract void updateInputs(GyroIOInputs inputs);
 
-    public default void resetHeading() {} 
-
+    public default void resetHeading() {}
+    
+    public abstract Rotation2d getHeading();
+    
     /** Updates IOLayer's internal state from kinematics (FOR SIM ONLY)*/
     public default void updateFromKinematics(SwerveModuleState[] swerveModuleStates, SwerveDriveKinematics kinematics) {}
 }

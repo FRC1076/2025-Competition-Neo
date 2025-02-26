@@ -31,6 +31,11 @@ public class GyroIOSim implements GyroIO {
     }
 
     @Override
+    public Rotation2d getHeading() {
+        return simRotation;
+    }
+
+    @Override
     public void resetHeading() {
         
     }    

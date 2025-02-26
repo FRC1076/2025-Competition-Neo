@@ -9,6 +9,7 @@ import static org.pihisamurai.frc2025.robot.Constants.VisionConstants.kFieldLayo
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.function.TriConsumer;
 import org.photonvision.EstimatedRobotPose;
@@ -22,9 +23,11 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Vision {
 
@@ -36,6 +39,12 @@ public class Vision {
             this.estimator = new PhotonPoseEstimator(kFieldLayout, kLocalizationStrategy, offset);
             this.estimator.setMultiTagFallbackStrategy(kFallbackStrategy);
         }
+    }
+
+    private final Supplier<Rotation2d> headingSupplier;
+
+    public Vision(Supplier<Rotation2d> headingSupplier) {
+        this.headingSupplier = headingSupplier;
     }
 
     //A Consumer that accepts a Pose3d and a Matrix of Standard Deviations, usually should call addVisionMeasurements() on a SwerveDrivePoseEstimator3d
@@ -70,6 +79,7 @@ public class Vision {
     /** Updates odometry with vision readings */
     public void updatePoseEstimator() {
         for (CamStruct cam : Cameras.values()) {
+            cam.estimator.addHeadingData(Timer.getFPGATimestamp(), headingSupplier.get());
             Optional<EstimatedRobotPose> estimatedPose = getPoseEstimate(cam);
             if (estimatedPose.isPresent()){
                 System.out.println(estimatedPose.get().estimatedPose);
